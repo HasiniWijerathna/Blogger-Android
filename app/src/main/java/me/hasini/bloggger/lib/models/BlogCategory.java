@@ -1,7 +1,6 @@
-package me.hasini.bloggger.home.lib.models;
+package me.hasini.bloggger.lib.models;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -20,10 +19,24 @@ import io.realm.annotations.PrimaryKey;
 
 public class BlogCategory extends RealmObject implements Serializable {
 
+    /**
+     * ID of the blog category
+     */
     @PrimaryKey
     private int id;
+    /**
+     * Name of the blog category
+     */
     private String name;
+
+    /**
+     * Active flag
+     */
     private boolean active;
+
+    /**
+     * URL of the image
+     */
     private String imageURL;
 
     public BlogCategory(int id, String name, boolean active, String imageURL) {

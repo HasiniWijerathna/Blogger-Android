@@ -1,4 +1,4 @@
-package me.hasini.bloggger.home.lib.models;
+package me.hasini.bloggger.lib.models;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -20,14 +20,31 @@ import io.realm.annotations.PrimaryKey;
 
 public class Post extends RealmObject implements Serializable {
 
+    /**
+     *ID of the post
+     */
     @PrimaryKey
     private int id;
+
+    /**
+     * Title of the post
+     */
     private String title;
+
+    /**
+     * Content of the post
+     */
     private String content;
 
+    /**
+     * ID of the blog
+     */
     @SerializedName("BlogId")
     private int blogId;
 
+    /**
+     * ID of the user
+     */
     @SerializedName("UserId")
     private int userId;
 

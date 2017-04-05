@@ -1,4 +1,4 @@
-package me.hasini.bloggger.home.lib.models;
+package me.hasini.bloggger.lib.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -13,10 +13,21 @@ import io.realm.annotations.PrimaryKey;
 
 public class BlogCount extends RealmObject implements Serializable {
 
+    /**
+     * ID of the blog count
+     */
     @PrimaryKey
     private int id;
+
+    /**
+     * ID of the blog
+     */
     @SerializedName("BlogId")
     private int blogId;
+
+    /**
+     * ID of the user
+     */
     @SerializedName("UserId")
     private int userId;
 
