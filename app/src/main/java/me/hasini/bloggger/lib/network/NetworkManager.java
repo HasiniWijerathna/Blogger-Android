@@ -1,23 +1,36 @@
 package me.hasini.bloggger.lib.network;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
+import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 import me.hasini.bloggger.BuildConfig;
+import me.hasini.bloggger.lib.models.AppSession;
+import me.hasini.bloggger.lib.preference.PreferenceManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
 
 /**
  * Created by Calcey on 04-Apr-17.
  */
 public class NetworkManager {
-//
+
+    private PreferenceManager preferenceManager;
+
+    public NetworkManager(@NonNull Context context) {
+       preferenceManager = PreferenceManager.getInstance(context);
+
+    }
+    //
 //    //Base URL
 //    private static final String BASE_URL = BuildConfig.API_BASE;
 //
@@ -84,6 +97,80 @@ public class NetworkManager {
 
         // Attach the listener
         request.getAsJSONObject(listener);
+    }
+
+    public void makeGetRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
+                                @NonNull final JSONObjectRequestListener listener) {
+        AppSession appSession = this.preferenceManager.getSession();
+        //There is a current session
+        if(appSession != null) {
+            if(System.currentTimeMillis() > appSession.getExpiration()){
+                //Session has expired
+                //Refresh for a new token
+                GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Sets a new session
+                        AppSession appSession = AppSession.deserialize(response.toString());
+                        preferenceManager.setSession(appSession);
+
+                        //Make the request
+                        GET(url,bodyParams,listener);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        listener.onError(anError);
+                    }
+                });
+            } else {
+                //Session still active
+                //Make the request
+                GET(url,bodyParams,listener);
+            }
+
+        } else {
+            //There is no session
+            //Make the request
+            POST(url,bodyParams,listener);
+        }
+
+    }
+    public void makePostRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
+                                @NonNull final JSONObjectRequestListener listener){
+        AppSession appSession = this.preferenceManager.getSession();
+        //There is a current session
+        if(appSession != null) {
+            if(System.currentTimeMillis() > appSession.getExpiration()){
+                //Session has expired
+                //Refresh for a new token
+                GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Sets a new session
+                        AppSession appSession = AppSession.deserialize(response.toString());
+                        preferenceManager.setSession(appSession);
+
+                        //Make the request
+                        POST(url, bodyParams,listener);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        listener.onError(anError);
+                    }
+                });
+            } else {
+                //Session still active
+                //Make the request
+                POST(url,bodyParams,listener);
+            }
+        } else {
+            //There is no session
+            //Make the request
+            POST(url, bodyParams, listener);
+        }
+
     }
 }
 

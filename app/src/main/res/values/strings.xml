@@ -16,4 +16,12 @@
     </string>
     <string name="username">Username</string>
     <string name="password">password</string>
+    <string name="title_activity_registration">Sign in</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="username_">Username</string>
+    <string name="password_">Password</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="login">Login</string>
+    <string name="register_">Register</string>
 </resources>

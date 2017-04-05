@@ -14,8 +14,9 @@ public class URLBuilder {
     /**
      * URL for registration page
      */
-    public static final String AUTH_REGISTER = Constants.API_BASE + "auth/register";
+    public static final String AUTH_REGISTER = Constants.API_BASE + "/auth/register";
 
+    public static final String REFRESH_TOKEN_ENDPOINT = Constants.API_BASE + "/auth/token";
     /**
      * Returns the model URL
      * @param modelType The model type to fetch
