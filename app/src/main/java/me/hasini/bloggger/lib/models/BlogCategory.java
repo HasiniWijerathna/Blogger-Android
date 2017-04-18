@@ -1,6 +1,7 @@
 package me.hasini.bloggger.lib.models;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -10,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -17,7 +19,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by Calcey on 04-Apr-17.
  */
 
-public class BlogCategory extends RealmObject implements Serializable {
+public class BlogCategory extends RealmObject {
 
     /**
      * ID of the blog category
@@ -39,12 +41,18 @@ public class BlogCategory extends RealmObject implements Serializable {
      */
     private String imageURL;
 
-    public BlogCategory(int id, String name, boolean active, String imageURL) {
+    /**
+     * List of blogs
+     */
+    @SerializedName("Blogs")
+    private RealmList<Blog> blogs;
 
+    public BlogCategory(int id, String name, boolean active, String imageURL, RealmList<Blog> blogs) {
         this.id = id;
         this.name = name;
         this.active = active;
         this.imageURL = imageURL;
+        this.blogs = blogs;
     }
 
     public int getId() {
@@ -79,6 +87,14 @@ public class BlogCategory extends RealmObject implements Serializable {
         this.imageURL = imageURL;
     }
 
+    public RealmList<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(RealmList<Blog> blogs) {
+        this.blogs = blogs;
+    }
+
     public BlogCategory() {
 
     }
@@ -96,4 +112,5 @@ public class BlogCategory extends RealmObject implements Serializable {
     public String serialize() throws JSONException {
         return new Gson().toJson(this);
     }
+
 }

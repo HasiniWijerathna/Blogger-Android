@@ -1,15 +1,19 @@
-package me.hasini.bloggger;
+package me.hasini.bloggger.home.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidnetworking.widget.ANImageView;
 
 import java.util.List;
 
+import me.hasini.bloggger.R;
+import me.hasini.bloggger.home.BlogCategoryClickListner;
 import me.hasini.bloggger.lib.models.BlogCategory;
 
 /**
@@ -19,9 +23,22 @@ import me.hasini.bloggger.lib.models.BlogCategory;
 public class HomeAdapter extends
         RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    public HomeAdapter(List<BlogCategory> blogCategories) {
+    private BlogCategoryClickListner blogCategoryClickListner;
+    private LayoutInflater layoutInflater;
+    private Context context;
+
+    public HomeAdapter(Context context, List<BlogCategory> blogCategories, BlogCategoryClickListner blogCategoryClickListner ) {
+        this.context = context;
         this.blogCategories = blogCategories;
+        this.blogCategoryClickListner = blogCategoryClickListner;
+        this.layoutInflater = LayoutInflater.from(context);
     }
+
+    private String[] wallpapers = new String[] {
+            "http://xtream.ch/wp-content/uploads/2016/01/wallpaperSunset.jpg",
+            "http://www.wallpaperhdi.com/wp-content/uploads/2016/06/Material_Design_Wallpaper_Image_HD.jpg",
+            "http://www.androidguys.com/wp-content/uploads/2014/11/image_new-11.png"
+    };
 
     private List<BlogCategory> blogCategories;
 
@@ -34,10 +51,17 @@ public class HomeAdapter extends
 
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
-        BlogCategory blogCategory = blogCategories.get(position);
+        final BlogCategory blogCategory = blogCategories.get(position);
         holder.nameTextView.setText(blogCategory.getName());
         holder.blogCategoryImage.setImageUrl(blogCategory.getImageURL());
-        holder.blogCategoryImage.setDefaultImageResId(R.drawable.giphy);
+        holder.blogCategoryImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                blogCategoryClickListner.onClickBlogCategory(blogCategory);
+
+            }
+        });
+
 
     }
 
@@ -46,16 +70,18 @@ public class HomeAdapter extends
         return blogCategories.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView nameTextView;
         ANImageView blogCategoryImage;
+        RelativeLayout blogCategoryLayout;
 
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.blogCategory_name);
             blogCategoryImage = (ANImageView) itemView.findViewById(R.id.blogCategory_image);
-
+            blogCategoryLayout = (RelativeLayout) itemView.findViewById(R.id.blogcategory_layout);
         }
     }
 

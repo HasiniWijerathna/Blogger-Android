@@ -11,13 +11,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Calcey on 04-Apr-17.
  */
-public class Blog extends RealmObject implements Serializable {
+public class Blog extends RealmObject {
     /**
      * ID of the blog
      */
@@ -41,17 +42,24 @@ public class Blog extends RealmObject implements Serializable {
     private int userId;
 
     /**
+     * List of posts
+     */
+    @SerializedName("Posts")
+    private RealmList<Post> posts;
+
+    /**
      * ID of the blog category
      */
     @SerializedName("BlogCategoryId")
     private int blogCategoryId;
 
-    public Blog(int id, String name, int count, int userId, int blogCategoryId) {
+    public Blog(int id, String name, int count, int userId, int blogCategoryId, RealmList<Post> posts) {
         this.id = id;
         this.name = name;
         this.count = count;
         this.userId = userId;
         this.blogCategoryId = blogCategoryId;
+        this.posts = posts;
     }
 
     public Blog() {
@@ -95,6 +103,14 @@ public class Blog extends RealmObject implements Serializable {
 
     public void setBlogCategoryId(int blogCategoryId) {
         this.blogCategoryId = blogCategoryId;
+    }
+
+    public RealmList<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(RealmList<Post> posts) {
+        this.posts = posts;
     }
 
     public static Blog deserialize(String jsonString) {

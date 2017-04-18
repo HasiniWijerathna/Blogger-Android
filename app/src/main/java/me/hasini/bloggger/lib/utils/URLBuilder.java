@@ -32,7 +32,7 @@ public class URLBuilder {
      * @param modelId The model ID
      * @return The URL to use for network requests
      */
-    public static String modelURL(String modelType, int modelId) {
+    public static String modelURLId(String modelType, int modelId) {
         return Constants.API_BASE + "/" + modelType + "/" + modelId;
     }
 }

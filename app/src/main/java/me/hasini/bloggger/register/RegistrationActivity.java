@@ -4,28 +4,21 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,9 +28,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.home.HomeActivity;
@@ -45,15 +36,14 @@ import me.hasini.bloggger.lib.models.AppSession;
 import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.preference.PreferenceManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
-import me.hasini.bloggger.login.LoginActivity;
 
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class RegistrationActivity extends AppCompatActivity  {
 
+    private static final String LOG_TAG = RegistrationActivity.class.getSimpleName();
     /**
      * {@link NetworkManager}  Required networkManager reference
      */
@@ -109,9 +99,6 @@ public class RegistrationActivity extends AppCompatActivity  {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
-
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -262,6 +249,7 @@ public class RegistrationActivity extends AppCompatActivity  {
 
             @Override
             public void onError(ANError anError) {
+                Log.e(LOG_TAG, anError.toString());
                 showProgress(false);
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "User already exists", Snackbar.LENGTH_SHORT);

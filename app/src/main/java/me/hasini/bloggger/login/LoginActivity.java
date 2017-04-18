@@ -3,7 +3,6 @@ package me.hasini.bloggger.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,6 +44,7 @@ import me.hasini.bloggger.register.RegistrationActivity;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
     /**
      * {@link NetworkManager}  Required networkManager reference
      */
@@ -69,6 +70,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         networkManager = new NetworkManager(this.getApplicationContext());
+        preferenceManager = PreferenceManager.getInstance(this.getApplicationContext());
+
+        initializeUIElements();
+    }
+
+    /**
+     * Initialize UI element references
+     */
+    private void initializeUIElements() {
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.login_username);
         mPasswordView = (EditText) findViewById(R.id.login_password);
@@ -101,10 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        networkManager = new NetworkManager(this.getApplicationContext());
-        preferenceManager = PreferenceManager.getInstance(this.getApplicationContext());
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -228,6 +235,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(ANError anError) {
                 showProgress(false);
+                Log.e(LOG_TAG, anError.toString());
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Invalid Credentials", Snackbar.LENGTH_SHORT);
                 snack.show();

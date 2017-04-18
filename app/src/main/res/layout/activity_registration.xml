@@ -112,9 +112,7 @@
                     />
 
             </android.support.design.widget.TextInputLayout>
-
-
-
+            
             <Button
                 android:id="@+id/register_button"
                 style="?android:textAppearanceSmall"
