@@ -28,6 +28,7 @@ import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
 import me.hasini.bloggger.post.adapter.PostAdapter;
 import me.hasini.bloggger.post.interfaces.PostClickListner;
+import me.hasini.bloggger.selectedPost.SelectedPostActivity;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -109,7 +110,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void navigateToSelectedPost(int postId) {
-        Intent intent = new Intent(PostActivity.this, selected.class);
+        Intent intent = new Intent(PostActivity.this, SelectedPostActivity.class);
         intent.putExtra("selectedPostId", postId);
         startActivity(intent);
     }

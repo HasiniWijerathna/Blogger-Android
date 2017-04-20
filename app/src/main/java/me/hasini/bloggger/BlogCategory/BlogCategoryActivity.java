@@ -118,6 +118,7 @@ public class BlogCategoryActivity extends BaseActivity {
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(BlogCategoryActivity.this, 1);
+
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
