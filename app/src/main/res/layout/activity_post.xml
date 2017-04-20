@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_home"
-    tools:context="me.hasini.bloggger.post.PostActivity">
+    tools:context="me.hasini.bloggger.post.PostActivity"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/post_recycler_view"

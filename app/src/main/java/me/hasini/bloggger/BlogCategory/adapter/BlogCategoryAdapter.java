@@ -1,10 +1,15 @@
 package me.hasini.bloggger.BlogCategory.adapter;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.vstechlab.easyfonts.EasyFonts;
 
 import java.util.List;
 
@@ -21,10 +26,12 @@ public class BlogCategoryAdapter extends
 
     private BlogClickListner blogClickListner;
     private List<Blog> blogs;
+    private Context context;
 
-    public BlogCategoryAdapter(List<Blog> blogs, BlogClickListner blogClickListner) {
+    public BlogCategoryAdapter(Context context, List<Blog> blogs, BlogClickListner blogClickListner) {
         this.blogs = blogs;
         this.blogClickListner = blogClickListner;
+        this.context = context;
     }
 
     @Override
@@ -59,6 +66,8 @@ public class BlogCategoryAdapter extends
             super(itemView);
 
             nameTextView = (TextView)itemView.findViewById(R.id.blog_name);
+            //Typeface typeface=Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+            nameTextView.setTypeface(EasyFonts.robotoMedium(context));
         }
     }
 }

@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/blogcategory_layout"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/blogcategory_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="60dp"-->
+    <!--android:focusable="true"-->
+    <!--android:clickable="true"-->
+    <!--android:background="?android:attr/selectableItemBackground">-->
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_card_view"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:focusable="true"
-    android:clickable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/blog_name"
@@ -15,6 +26,15 @@
         android:layout_height="wrap_content"
         android:hint="Blog name"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+  />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/blog_item_title_background"/>
     </RelativeLayout>
+
+    </android.support.v7.widget.CardView>

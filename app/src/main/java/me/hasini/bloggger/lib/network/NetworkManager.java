@@ -27,7 +27,7 @@ public class NetworkManager {
     private PreferenceManager preferenceManager;
 
     public NetworkManager(@NonNull Context context) {
-       preferenceManager = PreferenceManager.getInstance(context);
+        preferenceManager = PreferenceManager.getInstance(context);
 
     }
     //
@@ -56,12 +56,13 @@ public class NetworkManager {
 
     /**
      * Make an HTTP GET request
-     * @param url The URL to GET from
+     *
+     * @param url         The URL to GET from
      * @param queryParams Data to be sent as request parameters
-     * @param listener {@link JSONObjectRequestListener} instance for callbacks
+     * @param listener    {@link JSONObjectRequestListener} instance for callbacks
      */
-    public void GET(@NonNull String url,@Nullable HashMap<String, String> queryParams,
-                      @NonNull JSONObjectRequestListener listener) {
+    public void GET(@NonNull String url, @Nullable HashMap<String, String> queryParams,
+                    @NonNull JSONObjectRequestListener listener) {
 
         // Create request builder instance
         ANRequest.GetRequestBuilder requestBuilder = AndroidNetworking.get(url);
@@ -78,12 +79,13 @@ public class NetworkManager {
 
     /**
      * Make an HTTP POST request
-     * @param url The URL to POST to
+     *
+     * @param url        The URL to POST to
      * @param bodyParams Data to be sent in the request body
-     * @param listener {@link JSONObjectRequestListener} instance for callbacks
+     * @param listener   {@link JSONObjectRequestListener} instance for callbacks
      */
     public void POST(@NonNull String url, @Nullable HashMap<String, String> bodyParams,
-                      @NonNull JSONObjectRequestListener listener) {
+                     @NonNull JSONObjectRequestListener listener) {
 
         // Create request builder instance
         ANRequest.PostRequestBuilder requestBuilder = AndroidNetworking.post(url);
@@ -99,12 +101,56 @@ public class NetworkManager {
         request.getAsJSONObject(listener);
     }
 
+    /**
+     * Make an HTTP DELETE request
+     * @param url           The URL to DELETE request
+     * @param bodyParams    Data to be sent in the request body
+     * @param listner       {@link JSONObjectRequestListener} instance for callbacks
+     */
+    public void DELETE(@NonNull String url, @Nullable HashMap<String, String> bodyParams,
+                       @NonNull JSONObjectRequestListener listner){
+
+        //Create request builder instance
+        ANRequest.DeleteRequestBuilder requestBuilder = AndroidNetworking.delete(url);
+
+        //Add body parameters
+        requestBuilder.addBodyParameter(bodyParams);
+
+        //Build the request
+        ANRequest request = requestBuilder.build();
+
+        //Attach the listner
+        request.getAsJSONObject(listner);
+    }
+
+    /**
+     * Make an HTTP PUT request
+     * @param url           The URL to PUT request
+     * @param bodyParams    Data to be sent in the request body
+     * @param listner       {@link JSONObjectRequestListener} instance for callbacks
+     */
+    public void PUT (@NonNull String url, @Nullable HashMap<String, String> bodyParams,
+                     @NonNull JSONObjectRequestListener listner) {
+
+        //Create request builder instance
+        ANRequest.PutRequestBuilder requestBuilder = AndroidNetworking.put(url);
+
+        //Add body parameters
+        requestBuilder.addBodyParameter(bodyParams);
+
+        //Build the requst
+        ANRequest request = requestBuilder.build();
+
+        //Attach the listner
+        request.getAsJSONObject(listner);
+    }
+
     public void makeGetRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
-                                @NonNull final JSONObjectRequestListener listener) {
+                               @NonNull final JSONObjectRequestListener listener) {
         AppSession appSession = this.preferenceManager.getSession();
         //There is a current session
-        if(appSession != null) {
-            if(System.currentTimeMillis() > appSession.getExpiration()){
+        if (appSession != null) {
+            if (System.currentTimeMillis() > appSession.getExpiration()) {
                 //Session has expired
                 //Refresh for a new token
                 GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
@@ -115,7 +161,7 @@ public class NetworkManager {
                         preferenceManager.setSession(appSession);
 
                         //Make the request
-                        GET(url,bodyParams,listener);
+                        GET(url, bodyParams, listener);
                     }
 
                     @Override
@@ -126,22 +172,23 @@ public class NetworkManager {
             } else {
                 //Session still active
                 //Make the request
-                GET(url,bodyParams,listener);
+                GET(url, bodyParams, listener);
             }
 
         } else {
             //There is no session
             //Make the request
-            POST(url,bodyParams,listener);
+            GET(url, bodyParams, listener);
         }
 
     }
+
     public void makePostRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
-                                @NonNull final JSONObjectRequestListener listener){
+                                @NonNull final JSONObjectRequestListener listener) {
         AppSession appSession = this.preferenceManager.getSession();
         //There is a current session
-        if(appSession != null) {
-            if(System.currentTimeMillis() > appSession.getExpiration()){
+        if (appSession != null) {
+            if (System.currentTimeMillis() > appSession.getExpiration()) {
                 //Session has expired
                 //Refresh for a new token
                 GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
@@ -152,7 +199,7 @@ public class NetworkManager {
                         preferenceManager.setSession(appSession);
 
                         //Make the request
-                        POST(url, bodyParams,listener);
+                        POST(url, bodyParams, listener);
                     }
 
                     @Override
@@ -163,7 +210,7 @@ public class NetworkManager {
             } else {
                 //Session still active
                 //Make the request
-                POST(url,bodyParams,listener);
+                POST(url, bodyParams, listener);
             }
         } else {
             //There is no session
@@ -172,6 +219,82 @@ public class NetworkManager {
         }
 
     }
+
+    public void makeDeleteRequest (@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
+                                   @NonNull final JSONObjectRequestListener listener) {
+        AppSession appSession = this.preferenceManager.getSession();
+        //There is a current sessioon
+        if(appSession != null) {
+            if(System.currentTimeMillis() > appSession.getExpiration()){
+                //Session has expired
+                //Refresh for a new token
+                GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        //Sets a new session
+                        AppSession appSession = AppSession.deserialize(response.toString());
+                        preferenceManager.setSession(appSession);
+
+                        //Make the request
+                        DELETE(url, bodyParams, listener);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        listener.onError(anError);
+                    }
+                });
+            } else {
+                //Sesssion still active
+                //Make the request
+                DELETE(url, bodyParams,listener);
+
+            }
+        } else {
+            //There is no session
+            //Make the request
+            DELETE(url, bodyParams, listener);
+        }
+    }
+
+    public void makePutRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
+                                @NonNull final JSONObjectRequestListener listener) {
+        AppSession appSession = this.preferenceManager.getSession();
+        //There is a current session
+        if (appSession != null) {
+            if (System.currentTimeMillis() > appSession.getExpiration()) {
+                //Session has expired
+                //Refresh for a new token
+                GET(URLBuilder.REFRESH_TOKEN_ENDPOINT, new HashMap<String, String>(), new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Sets a new session
+                        AppSession appSession = AppSession.deserialize(response.toString());
+                        preferenceManager.setSession(appSession);
+
+                        //Make the request
+                        PUT(url, bodyParams, listener);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        listener.onError(anError);
+                    }
+                });
+            } else {
+                //Session still active
+                //Make the request
+                PUT(url, bodyParams, listener);
+            }
+        } else {
+            //There is no session
+            //Make the request
+            PUT(url, bodyParams, listener);
+        }
+
+    }
+
 }
 
 

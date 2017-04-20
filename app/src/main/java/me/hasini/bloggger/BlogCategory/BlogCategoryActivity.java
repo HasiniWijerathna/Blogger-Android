@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +84,7 @@ public class BlogCategoryActivity extends BaseActivity {
 
     private void initializeUIElements() {
       this.recyclerView = (RecyclerView) findViewById(R.id.blogCategory_recycler_view);
+        //recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
     }
 
     private void getCategoryBlogs(BlogCategory selectedCategory) {
@@ -92,7 +94,7 @@ public class BlogCategoryActivity extends BaseActivity {
             @Override
             public void onResponse(JSONObject response) {
                 BlogCategory blogCategory = BlogCategory.deserialize(response.toString());
-                Log.d("hgg", blogCategory.toString());
+                //Log.d("hgg", blogCategory.toString());
                 displayCategoryList(blogCategory);
             }
 
@@ -109,10 +111,9 @@ public class BlogCategoryActivity extends BaseActivity {
         this.recyclerView = (RecyclerView) findViewById(R.id.blogCategory_recycler_view);
         RealmList<Blog> blogs = selectedCategory.getBlogs();
 
-        this.blogCategoryAdapter = new BlogCategoryAdapter(blogs, new BlogClickListner() {
+        this.blogCategoryAdapter = new BlogCategoryAdapter(this, blogs, new BlogClickListner() {
             @Override
             public void OnClickBlog(Blog blog) {
-               // Toast.makeText(BlogCategoryActivity.this, "Post!!" , Toast.LENGTH_SHORT).show();
                 navigateToPost(blog);
 
             }

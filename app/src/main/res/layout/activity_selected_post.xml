@@ -15,6 +15,7 @@
         android:layout_alignParentStart="true" />
 
     <TextView
+        android:id="@+id/selected_post_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/selected_post_title"
@@ -22,7 +23,26 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingTop="10dp"
+        android:paddingBottom="10dp"
        />
 
+    <TextView
+        android:id="@+id/selected_post_comment_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Responses"
+        android:textSize="20dp"
+        android:layout_below="@id/selected_post_content"
+/>
+
+    <ListView
+        android:id="@+id/selected_post_comments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:layout_below="@+id/selected_post_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp" />
 
     </RelativeLayout>
