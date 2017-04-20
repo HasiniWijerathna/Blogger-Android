@@ -35,7 +35,8 @@
             android:label="@string/title_activity_registration" />
         <activity android:name=".BlogCategory.BlogCategoryActivity" />
         <activity android:name=".post.PostActivity" />
-        <activity android:name=".selectedPost.SelectedPostActivity"></activity>
+        <activity android:name=".selectedPost.SelectedPostActivity" />
+        <activity android:name=".editComment.EditCommentActivity"></activity>
     </application>
 
 </manifest>

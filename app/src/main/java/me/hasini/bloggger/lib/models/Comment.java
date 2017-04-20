@@ -28,10 +28,18 @@ public class Comment extends RealmObject implements Serializable {
     @SerializedName("PostId")
     private int postId;
 
-    public Comment(int id, String comment, int postId) {
+
+    /**
+     * ID of the user
+     */
+    @SerializedName("UserId")
+    private int userId;
+
+    public Comment(int id, String comment, int postId, int userId) {
         this.id = id;
         this.comment = comment;
         this.postId = postId;
+        this.userId = userId;
     }
 
     public Comment() {
@@ -59,6 +67,14 @@ public class Comment extends RealmObject implements Serializable {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public static Comment deserialize(String jsonString) {

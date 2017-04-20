@@ -11,7 +11,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -48,13 +50,19 @@ public class Post extends RealmObject implements Serializable {
     @SerializedName("UserId")
     private int userId;
 
-    public Post(int id, String title, String content, int blogId, int userId) {
+    /**
+     * List of comments
+     */
+    @SerializedName("Comments")
+    private RealmList<Comment> comments;
 
-        this.id= id;
+    public Post(int id, String title, String content, int blogId, int userId, RealmList<Comment> comments) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.blogId = blogId;
         this.userId = userId;
+        this.comments = comments;
     }
 
     public Post() {
@@ -102,6 +110,13 @@ public class Post extends RealmObject implements Serializable {
 
     public static Post deserialize(String jsonString) {
         return new Gson().fromJson(jsonString, Post.class);
+    }
+    public RealmList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(RealmList<Comment> comments) {
+        this.comments = comments;
     }
 
     public static List<Post> deserializeCollection(String jsonString) {

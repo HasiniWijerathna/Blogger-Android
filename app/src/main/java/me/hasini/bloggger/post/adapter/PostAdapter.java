@@ -1,10 +1,13 @@
 package me.hasini.bloggger.post.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.vstechlab.easyfonts.EasyFonts;
 
 import java.util.List;
 
@@ -22,10 +25,12 @@ public class PostAdapter extends
 
     private PostClickListner postClickListner;
     private List<Post> posts;
+    private Context context;
 
-    public PostAdapter( List<Post> posts, PostClickListner postClickListner) {
+    public PostAdapter(Context context, List<Post> posts, PostClickListner postClickListner) {
         this.postClickListner = postClickListner;
         this.posts = posts;
+        this.context = context;
     }
 
 
@@ -66,6 +71,8 @@ public class PostAdapter extends
 
             nameView = (TextView)itemView.findViewById(R.id.post_title);
             contentView = (TextView) itemView.findViewById(R.id.post_content);
+            nameView.setTypeface(EasyFonts.robotoMedium(context));
+            contentView.setTypeface(EasyFonts.robotoMedium(context));
         }
 
     }
