@@ -64,11 +64,19 @@ public class NetworkManager {
     public void GET(@NonNull String url, @Nullable HashMap<String, String> queryParams,
                     @NonNull JSONObjectRequestListener listener) {
 
+        // Get the current session
+        AppSession appSession = this.preferenceManager.getSession();
+
         // Create request builder instance
         ANRequest.GetRequestBuilder requestBuilder = AndroidNetworking.get(url);
 
         // Add query params
         requestBuilder.addQueryParameter(queryParams);
+
+        // Add the Authorization header if there's a current session
+        if (appSession != null && appSession.getToken() != null) {
+            requestBuilder.addHeaders("Authorization", "Bearer: " + appSession.getToken());
+        }
 
         // Build the request
         ANRequest request = requestBuilder.build();
@@ -79,19 +87,28 @@ public class NetworkManager {
 
     /**
      * Make an HTTP POST request
-     *
      * @param url        The URL to POST to
      * @param bodyParams Data to be sent in the request body
      * @param listener   {@link JSONObjectRequestListener} instance for callbacks
      */
-    public void POST(@NonNull String url, @Nullable HashMap<String, String> bodyParams,
+    public void POST(@NonNull String url, @Nullable HashMap<String, Object> bodyParams,
                      @NonNull JSONObjectRequestListener listener) {
+
+        // Get the current session
+        AppSession appSession = this.preferenceManager.getSession();
 
         // Create request builder instance
         ANRequest.PostRequestBuilder requestBuilder = AndroidNetworking.post(url);
 
         // Add body parameters
         requestBuilder.addBodyParameter(bodyParams);
+
+
+        // Add the Authorization header if there's a current session
+        if (appSession != null && appSession.getToken() != null) {
+            requestBuilder.addHeaders("Authorization", "Bearer: " + appSession.getToken());
+        }
+
 
 
         // Build the request
@@ -110,11 +127,20 @@ public class NetworkManager {
     public void DELETE(@NonNull String url, @Nullable HashMap<String, String> bodyParams,
                        @NonNull JSONObjectRequestListener listner){
 
+        // Get the current session
+        AppSession appSession = this.preferenceManager.getSession();
+
         //Create request builder instance
         ANRequest.DeleteRequestBuilder requestBuilder = AndroidNetworking.delete(url);
 
         //Add body parameters
         requestBuilder.addBodyParameter(bodyParams);
+
+
+        // Add the Authorization header if there's a current session
+        if (appSession != null && appSession.getToken() != null) {
+            requestBuilder.addHeaders("Authorization", "Bearer: " + appSession.getToken());
+        }
 
         //Build the request
         ANRequest request = requestBuilder.build();
@@ -132,11 +158,20 @@ public class NetworkManager {
     public void PUT (@NonNull String url, @Nullable HashMap<String, String> bodyParams,
                      @NonNull JSONObjectRequestListener listner) {
 
+        // Get the current session
+        AppSession appSession = this.preferenceManager.getSession();
+
         //Create request builder instance
         ANRequest.PutRequestBuilder requestBuilder = AndroidNetworking.put(url);
 
         //Add body parameters
         requestBuilder.addBodyParameter(bodyParams);
+
+
+        // Add the Authorization header if there's a current session
+        if (appSession != null && appSession.getToken() != null) {
+            requestBuilder.addHeaders("Authorization", "Bearer: " + appSession.getToken());
+        }
 
         //Build the requst
         ANRequest request = requestBuilder.build();
@@ -183,7 +218,7 @@ public class NetworkManager {
 
     }
 
-    public void makePostRequest(@NonNull final String url, @NonNull final HashMap<String, String> bodyParams,
+    public void makePostRequest(@NonNull final String url, @NonNull final HashMap<String, Object> bodyParams,
                                 @NonNull final JSONObjectRequestListener listener) {
         AppSession appSession = this.preferenceManager.getSession();
         //There is a current session

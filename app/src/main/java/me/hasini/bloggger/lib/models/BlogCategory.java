@@ -113,4 +113,8 @@ public class BlogCategory extends RealmObject {
         return new Gson().toJson(this);
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

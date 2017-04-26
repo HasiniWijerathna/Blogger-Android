@@ -2,10 +2,14 @@ package me.hasini.bloggger.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
@@ -19,8 +23,11 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import me.hasini.bloggger.BaseActivity;
 import me.hasini.bloggger.BlogCategory.BlogCategoryActivity;
+import me.hasini.bloggger.addBlogs.AddBlogActivity;
 import me.hasini.bloggger.home.adapter.HomeAdapter;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.lib.models.BlogCategory;
@@ -49,6 +56,17 @@ public class HomeActivity extends BaseActivity {
         this.initializeUIElements();
         this.queryAndShowCategoryList();
         this.fetchBlogCategories();
+
+        FloatingActionButton addBlogs = (FloatingActionButton) findViewById(R.id.floating_button_add_blog);
+        addBlogs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(HomeActivity.this, AddBlogActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initializeModules() {
@@ -57,7 +75,12 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void initializeUIElements() {
+        FloatingActionButton addBlogs = (FloatingActionButton) findViewById(R.id.floating_button_add_blog);
         this.recyclerView = (RecyclerView) findViewById(R.id.blogCategory_recycler_view);
+        //recyclerView.setItemAnimator(new SlideInLeftAnimator());
+        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+        recyclerView.setItemAnimator(animator);
+
     }
 
     private void fetchBlogCategories() {

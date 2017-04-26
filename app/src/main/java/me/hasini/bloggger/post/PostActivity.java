@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.lib.models.Post;
 import me.hasini.bloggger.lib.network.NetworkManager;
@@ -92,6 +92,9 @@ public class PostActivity extends AppCompatActivity {
     private void displayPostList(int blogId) {
         getCategoryPosts();
         this.recyclerView = (RecyclerView) findViewById(R.id.post_recycler_view);
+
+//        SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
+//        recyclerView.setItemAnimator(animator);
         RealmResults<Post> posts = realm.where(Post.class).findAll();
 
         this.postAdapter = new PostAdapter(this, posts, new PostClickListner() {
@@ -104,7 +107,7 @@ public class PostActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(PostActivity.this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        recyclerView.setAdapter(new AlphaInAnimationAdapter(postAdapter));
         recyclerView.setAdapter(postAdapter);
 
     }

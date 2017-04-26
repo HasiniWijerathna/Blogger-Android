@@ -229,7 +229,7 @@ public class RegistrationActivity extends AppCompatActivity  {
     }
 
     private void onConfirm (String name, String username, String email, String password) {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("name", name);
         map.put("username", username);
         map.put("email", email);

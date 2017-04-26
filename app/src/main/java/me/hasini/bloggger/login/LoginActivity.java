@@ -216,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param password The password string
      */
     private void authenticate(String username, String password) {
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
 

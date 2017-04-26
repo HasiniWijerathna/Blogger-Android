@@ -5,12 +5,34 @@
     android:orientation="vertical" >
 
     <EditText
+        android:id="@+id/edit_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:hint="Edit comment"
+
         />
 
+    <!--<Button-->
+        <!--android:id="@+id/login_register_button"-->
+        <!--style="?android:textAppearanceSmall"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="@string/register_"-->
+        <!--android:textStyle="bold"-->
+        <!--/>-->
+
+    <Button
+        android:id="@+id/edit_comment_save"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_below="@+id/edit_comment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     </RelativeLayout>
+
+

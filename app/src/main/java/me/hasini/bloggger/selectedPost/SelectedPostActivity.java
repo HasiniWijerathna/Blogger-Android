@@ -6,6 +6,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,12 +23,16 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import me.hasini.bloggger.BlogCategory.BlogCategoryActivity;
 import me.hasini.bloggger.R;
+import me.hasini.bloggger.editComment.EditCommentActivity;
+import me.hasini.bloggger.home.HomeActivity;
 import me.hasini.bloggger.lib.models.Comment;
 import me.hasini.bloggger.lib.models.Post;
 import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.preference.PreferenceManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
+import me.hasini.bloggger.login.LoginActivity;
 import me.hasini.bloggger.selectedPost.adapter.CommentAdapter;
 import me.hasini.bloggger.selectedPost.adapter.interfaces.CommentDeleteListner;
 import me.hasini.bloggger.selectedPost.adapter.interfaces.CommentEditListner;
@@ -39,10 +45,12 @@ public class SelectedPostActivity extends AppCompatActivity {
 
     private ListView listView;
     private TextView postTile;
-    private  TextView postContent;
+    private TextView postContent;
     private CommentAdapter commentAdapter;
     private CommentEditListner commentEditListner;
     private CommentDeleteListner commentDeleteListner;
+    private TextView newComment;
+    private Button saveComment;
     /**
      * {@Link PreferenceManager} Required PreferenceManager reference
      */
@@ -53,7 +61,7 @@ public class SelectedPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_post);
         preferenceManager = PreferenceManager.getInstance(this.getApplicationContext());
-        int postId;
+        int postId = 0;
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -66,6 +74,60 @@ public class SelectedPostActivity extends AppCompatActivity {
             getCommentsOfPost();
             displayComments(postId);
         }
+
+        final int finalPostId = postId;
+        int loggedUserId = preferenceManager.getSession().getUser().getId();
+        if(preferenceManager.getSession().getUser()!= null){
+            saveComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addNewComment(finalPostId);
+                    newComment.setText("");
+                }
+            });
+        }
+        else {
+            AlertDialog dialog = new AlertDialog
+                    .Builder(getApplicationContext())
+                    .setCancelable(true)
+                    .setMessage("Please login to add blogs!")
+                   .setCancelable(true)
+                    .create();
+            dialog.show();
+            Intent navigateTo = new Intent(SelectedPostActivity.this, LoginActivity.class);
+            startActivity(navigateTo);
+
+        }
+
+    }
+
+    private void addNewComment(final int id) {
+        HashMap<String, Object> map = new HashMap<>();
+        String URL = URLBuilder.modelURL("comment");
+        String comment = newComment.getText().toString();
+        String postId = Integer.toString(id);
+        map.put("comment", comment);
+        map.put("postId", postId);
+
+        this.networkManager.makePostRequest(URL, map, new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                realm.beginTransaction();
+                RealmResults<Post> posts = realm.where(Post.class).findAll();
+                Post selectedPost = posts.where().equalTo("id",id).findFirst();
+                Comment comment  = Comment.deserialize(response.toString());
+                selectedPost.getComments().add(comment);
+                realm.copyToRealmOrUpdate(selectedPost);
+                realm.commitTransaction();
+                displayComments(id);
+
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                    Log.e(LOG_TAG, anError.toString());
+            }
+        });
 
     }
 
@@ -111,6 +173,9 @@ public class SelectedPostActivity extends AppCompatActivity {
         HashMap<String, String> bodyParams = new HashMap<>();
        // bodyParams.put("comment", authName);
        // this.networkManager.makePutRequest();
+        Intent intent = new Intent(SelectedPostActivity.this, EditCommentActivity.class);
+        intent.putExtra("selectedCommentId", commentId);
+        startActivity(intent);
     }
 
     private void showCommentDeleteAuthentication(final Comment comment) {
@@ -138,12 +203,14 @@ public class SelectedPostActivity extends AppCompatActivity {
 
     private void deleteSelectedComment(Comment comment) {
         int commentId = comment.getId();
+        final int postId = comment.getPostId();
         String URL = URLBuilder.modelURLId("comment", commentId);
         HashMap<String, String> bodyParams = new HashMap<>();
         this.networkManager.makeDeleteRequest(URL, bodyParams, new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 getCommentsOfPost();
+                displayComments(postId);
             }
 
             @Override
@@ -192,6 +259,8 @@ public class SelectedPostActivity extends AppCompatActivity {
         postContent = (TextView) findViewById(R.id.selected_post_content);
         postTile.setTypeface(EasyFonts.robotoMedium(this));
         postContent.setTypeface(EasyFonts.robotoMedium(this));
+        newComment = (TextView)findViewById(R.id.selected_post_new_comment);
+        saveComment = (Button)findViewById(R.id.selected_post_save);
     }
 
     private void initializeModules() {

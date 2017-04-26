@@ -19,14 +19,16 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".splash.SplashActivity">
+        <activity
+            android:name=".splash.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home.HomeActivity" />
+        <activity android:name=".home.HomeActivity"/>
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -36,7 +38,11 @@
         <activity android:name=".BlogCategory.BlogCategoryActivity" />
         <activity android:name=".post.PostActivity" />
         <activity android:name=".selectedPost.SelectedPostActivity" />
-        <activity android:name=".editComment.EditCommentActivity"></activity>
+        <activity android:name=".editComment.EditCommentActivity" />
+        <activity android:name=".addBlogs.AddBlogActivity" />
+        <activity android:name=".addPost.AddPostActivity" />
+        <activity android:name=".ToolbarActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -110,20 +110,25 @@ public class BlogCategoryActivity extends BaseActivity {
     private void displayCategoryList(BlogCategory selectedCategory) {
         this.recyclerView = (RecyclerView) findViewById(R.id.blogCategory_recycler_view);
         RealmList<Blog> blogs = selectedCategory.getBlogs();
+        if(blogs.size() != 0){
+            this.blogCategoryAdapter = new BlogCategoryAdapter(this, blogs, new BlogClickListner() {
+                @Override
+                public void OnClickBlog(Blog blog) {
+                    navigateToPost(blog);
 
-        this.blogCategoryAdapter = new BlogCategoryAdapter(this, blogs, new BlogClickListner() {
-            @Override
-            public void OnClickBlog(Blog blog) {
-                navigateToPost(blog);
+                }
+            });
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(BlogCategoryActivity.this, 1);
 
-            }
-        });
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(BlogCategoryActivity.this, 1);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(blogCategoryAdapter);
+        } else {
+            Toast.makeText(BlogCategoryActivity.this,
+                           "No blogs yet", Toast.LENGTH_LONG).show();
+        }
 
-        recyclerView.setAdapter(blogCategoryAdapter);
         // TODO: Show the blogs
     }
 

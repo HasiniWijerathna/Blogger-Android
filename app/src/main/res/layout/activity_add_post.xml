@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/add_post_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add post"
+        android:paddingBottom="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:layout_below="@+id/add_post_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter post title"
+        android:id="@+id/post_title" />
+
+
+   <EditText
+       android:id="@+id/post_content"
+       android:layout_width="match_parent"
+       android:layout_height="140dp"
+       android:hint="Enter post content"
+       android:textSize="20dp"
+       android:layout_below="@+id/post_title"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentStart="true"
+       android:layout_marginTop="13dp"
+       android:paddingBottom="10dp"/>
+
+    <Button
+        android:id="@+id/post_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_below="@+id/post_content"/>
+    </RelativeLayout>

@@ -47,6 +47,7 @@ public class HomeAdapter extends
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_blogcategory, parent, false);
         return new ViewHolder(itemView);
+
     }
 
     @Override
