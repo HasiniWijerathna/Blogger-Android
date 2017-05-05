@@ -116,18 +116,9 @@ public class HomeActivity extends BaseActivity {
         RealmResults<BlogCategory> blogCategories = realm.where(BlogCategory.class).findAll();
 
         if (this.homeAdapter == null) {
-//            this.homeAdapter = new HomeAdapter(blogCategories, new BlogCategoryClickListner() {
-//                @Override
-//                public void onClickBlogCategory(BlogCategory blogCategory) {
-//                    Toast.makeText(HomeActivity.this,
-//                            "Your Message", Toast.LENGTH_LONG).show();
-//                }
-//            });
             this.homeAdapter = new HomeAdapter(this, blogCategories, new BlogCategoryClickListner() {
                 @Override
                 public void onClickBlogCategory(BlogCategory blogCategory) {
-
-                    //showToastMessage(blogCategory);
                     navigateToBlogCategory(blogCategory);
 
                 }
@@ -151,9 +142,4 @@ public class HomeActivity extends BaseActivity {
         startActivity(intent);
     }
 
-
-    private void showToastMessage(BlogCategory blogCategoty) {
-
-        Toast.makeText(HomeActivity.this, "" + blogCategoty.getName(), Toast.LENGTH_SHORT).show();
-    }
 }

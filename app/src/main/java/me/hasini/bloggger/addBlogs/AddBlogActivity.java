@@ -1,6 +1,5 @@
 package me.hasini.bloggger.addBlogs;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -28,10 +25,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.addPost.AddPostActivity;
-import me.hasini.bloggger.home.HomeActivity;
 import me.hasini.bloggger.lib.models.Blog;
 import me.hasini.bloggger.lib.models.BlogCategory;
-import me.hasini.bloggger.lib.models.Comment;
 import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.preference.PreferenceManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
@@ -65,11 +60,6 @@ public class AddBlogActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(blogTitleValue != null) {
                     addBlogtoDatabase();
-                    //int blogId = selectedBlogCategory.getId();
-                   // navigateToAddPost(newBlogId);
-//                    Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
-//                    intent.putExtra("newBlogId", newBlogId);
-//                    startActivity(intent);
                 } else {
                         AlertDialog dialog = new AlertDialog
                                 .Builder(getApplicationContext())
@@ -99,7 +89,6 @@ public class AddBlogActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 realm.beginTransaction();
-                RealmResults<Blog> blogs = realm.where(Blog.class).findAll();
                 Blog newBlog  = Blog.deserialize(response.toString());
                 realm.copyToRealmOrUpdate(newBlog);
                 realm.commitTransaction();
@@ -119,7 +108,6 @@ public class AddBlogActivity extends AppCompatActivity {
     }
 
     private void navigateToAddPost(int blogId) {
-       // int blogId = selectedBlogCategory.getId();
         Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
         intent.putExtra("newBlogId", blogId);
         startActivity(intent);

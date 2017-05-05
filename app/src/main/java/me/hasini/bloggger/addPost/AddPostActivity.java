@@ -14,14 +14,10 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONObject;
-
 import java.util.HashMap;
 
 import io.realm.Realm;
-import me.hasini.bloggger.BlogCategory.BlogCategoryActivity;
 import me.hasini.bloggger.R;
-import me.hasini.bloggger.addBlogs.AddBlogActivity;
-import me.hasini.bloggger.lib.models.Blog;
 import me.hasini.bloggger.lib.models.Post;
 import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
@@ -67,28 +63,6 @@ public class AddPostActivity extends AppCompatActivity {
             });
         }
     }
-
-//    private void getSelectedBlog(int blogId) {
-//        String URL = URLBuilder.modelURLId("blog", blogId);
-//        HashMap<String, String> bodyParams = new HashMap<>();
-//        this.networkManager.makeGetRequest(URL, bodyParams, new JSONObjectRequestListener() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Blog selectedBlog = Blog.deserialize(response.toString());
-//                blogCategoryId = selectedBlog.getBlogCategoryId();
-//            }
-//
-//            @Override
-//            public void onError(ANError anError) {
-//                Log.e((String) LOG_TAG, anError.getErrorDetail());
-//            }
-//        });
-//
-//
-//    }
-
-
-
     private void addPostToDatabase(int blogId) {
         String URL = URLBuilder.modelURL("post");
         HashMap<String, Object> map = new HashMap<>();
