@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".home.HomeActivity"/>
+        <activity android:name=".home.HomeActivity" />
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -41,8 +41,10 @@
         <activity android:name=".editComment.EditCommentActivity" />
         <activity android:name=".addBlogs.AddBlogActivity" />
         <activity android:name=".addPost.AddPostActivity" />
-        <activity android:name=".ToolbarActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity
+            android:name=".ToolbarActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

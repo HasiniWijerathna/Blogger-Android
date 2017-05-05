@@ -27,6 +27,7 @@ import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import me.hasini.bloggger.BaseActivity;
 import me.hasini.bloggger.BlogCategory.BlogCategoryActivity;
+import me.hasini.bloggger.TestActivity;
 import me.hasini.bloggger.addBlogs.AddBlogActivity;
 import me.hasini.bloggger.home.adapter.HomeAdapter;
 import me.hasini.bloggger.R;
@@ -62,7 +63,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(HomeActivity.this, AddBlogActivity.class);
+                Intent intent = new Intent(HomeActivity.this, TestActivity.class);
                 startActivity(intent);
             }
         });
