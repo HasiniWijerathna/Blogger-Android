@@ -14,17 +14,24 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/selected_post_content"
+    <!--<TextView-->
+        <!--android:id="@+id/selected_post_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/selected_post_title"-->
+        <!--android:hint="Post content"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingBottom="10dp"-->
+       <!--/>-->
+
+    <us.feras.mdv.MarkdownView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/selected_post_title"
-        android:hint="Post content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-       />
+        android:id="@+id/selected_post_content"
+        android:hint="Content"
+        android:layout_below="@+id/selected_post_title"/>
 
     <TextView
         android:id="@+id/response"

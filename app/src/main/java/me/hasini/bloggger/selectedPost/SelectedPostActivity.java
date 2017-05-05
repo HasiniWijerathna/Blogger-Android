@@ -36,6 +36,7 @@ import me.hasini.bloggger.login.LoginActivity;
 import me.hasini.bloggger.selectedPost.adapter.CommentAdapter;
 import me.hasini.bloggger.selectedPost.adapter.interfaces.CommentDeleteListner;
 import me.hasini.bloggger.selectedPost.adapter.interfaces.CommentEditListner;
+import us.feras.mdv.MarkdownView;
 
 public class SelectedPostActivity extends AppCompatActivity {
 
@@ -45,7 +46,7 @@ public class SelectedPostActivity extends AppCompatActivity {
 
     private ListView listView;
     private TextView postTile;
-    private TextView postContent;
+    private MarkdownView postContent;
     private CommentAdapter commentAdapter;
     private CommentEditListner commentEditListner;
     private CommentDeleteListner commentDeleteListner;
@@ -256,9 +257,9 @@ public class SelectedPostActivity extends AppCompatActivity {
     }
     private void initializeUIElements() {
         postTile = (TextView) findViewById(R.id.selected_post_title);
-        postContent = (TextView) findViewById(R.id.selected_post_content);
+        postContent = (MarkdownView) findViewById(R.id.selected_post_content);
         postTile.setTypeface(EasyFonts.robotoMedium(this));
-        postContent.setTypeface(EasyFonts.robotoMedium(this));
+        //postContent.setTypeface(EasyFonts.robotoMedium(this));
         newComment = (TextView)findViewById(R.id.selected_post_new_comment);
         saveComment = (Button)findViewById(R.id.selected_post_save);
     }
@@ -299,7 +300,8 @@ public class SelectedPostActivity extends AppCompatActivity {
 
     private void displayPost(Post post) {
         postTile.setText(post.getTitle());
-        postContent.setText(post.getContent());
+        //postContent.setText(post.getContent());
+        postContent.loadMarkdown(post.getContent());
     }
 
 }

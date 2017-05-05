@@ -28,6 +28,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.addPost.AddPostActivity;
+import me.hasini.bloggger.home.HomeActivity;
 import me.hasini.bloggger.lib.models.Blog;
 import me.hasini.bloggger.lib.models.BlogCategory;
 import me.hasini.bloggger.lib.models.Comment;
@@ -65,6 +66,7 @@ public class AddBlogActivity extends AppCompatActivity {
                 if(blogTitleValue != null) {
                     addBlogtoDatabase();
                     //int blogId = selectedBlogCategory.getId();
+                   // navigateToAddPost(newBlogId);
 //                    Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
 //                    intent.putExtra("newBlogId", newBlogId);
 //                    startActivity(intent);
@@ -103,7 +105,7 @@ public class AddBlogActivity extends AppCompatActivity {
                 realm.commitTransaction();
                 newBlogId = newBlog.getId();
 
-                navigateToAddPost(newBlog.getId());
+                navigateToAddPost(newBlogId);
             }
 
             @Override
@@ -112,6 +114,8 @@ public class AddBlogActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     private void navigateToAddPost(int blogId) {
@@ -119,6 +123,7 @@ public class AddBlogActivity extends AppCompatActivity {
         Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
         intent.putExtra("newBlogId", blogId);
         startActivity(intent);
+        finish();
     }
 
     private void setSpinner() {

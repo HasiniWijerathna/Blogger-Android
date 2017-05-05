@@ -58,5 +58,6 @@ dependencies {
     compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
     compile 'jp.wasabeef:recyclerview-animators:2.2.6'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+    compile 'us.feras.mdv:markdownview:1.1.0'
     testCompile 'junit:junit:4.12'
 }
