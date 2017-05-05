@@ -15,6 +15,7 @@ import io.realm.RealmResults;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.lib.models.Post;
 import me.hasini.bloggger.post.interfaces.PostClickListner;
+import us.feras.mdv.MarkdownView;
 
 /**
  * Created by Calcey on 18-Apr-17.
@@ -46,7 +47,8 @@ public class PostAdapter extends
         final Post post = posts.get(position);
 
         holder.nameView.setText(post.getTitle());
-        holder.contentView.setText(post.getContent());
+        //holder.contentView.setText(post.getContent());
+        holder.contentView.loadMarkdown(post.getContent());
         holder.nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,15 +66,17 @@ public class PostAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameView;
-        TextView contentView;
+        //TextView contentView;
+        MarkdownView contentView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             nameView = (TextView)itemView.findViewById(R.id.post_title);
-            contentView = (TextView) itemView.findViewById(R.id.post_content);
+            //contentView = (TextView) itemView.findViewById(R.id.post_content);
+            contentView = (MarkdownView) itemView.findViewById(R.id.post_content);
             nameView.setTypeface(EasyFonts.robotoMedium(context));
-            contentView.setTypeface(EasyFonts.robotoMedium(context));
+           // contentView.setTypeface(EasyFonts.robotoMedium(context));
         }
 
     }
