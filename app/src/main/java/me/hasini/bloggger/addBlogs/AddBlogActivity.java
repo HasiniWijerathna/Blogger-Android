@@ -46,6 +46,7 @@ public class AddBlogActivity extends AppCompatActivity {
     private BlogCategory selectedBlogCategory;
     private EditText blogTitle;
     private String blogTitleValue;
+    private int newBlogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,10 @@ public class AddBlogActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(blogTitleValue != null) {
                     addBlogtoDatabase();
-                    int blogId = selectedBlogCategory.getId();
-                    Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
-                    intent.putExtra("selectedBlogId", blogId);
-                    startActivity(intent);
+                    //int blogId = selectedBlogCategory.getId();
+//                    Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
+//                    intent.putExtra("newBlogId", newBlogId);
+//                    startActivity(intent);
                 } else {
                         AlertDialog dialog = new AlertDialog
                                 .Builder(getApplicationContext())
@@ -100,9 +101,9 @@ public class AddBlogActivity extends AppCompatActivity {
                 Blog newBlog  = Blog.deserialize(response.toString());
                 realm.copyToRealmOrUpdate(newBlog);
                 realm.commitTransaction();
+                newBlogId = newBlog.getId();
 
-
-                navigateToAddPost();
+                navigateToAddPost(newBlog.getId());
             }
 
             @Override
@@ -113,10 +114,10 @@ public class AddBlogActivity extends AppCompatActivity {
 
     }
 
-    private void navigateToAddPost() {
-        int blogId = selectedBlogCategory.getId();
+    private void navigateToAddPost(int blogId) {
+       // int blogId = selectedBlogCategory.getId();
         Intent intent = new Intent(AddBlogActivity.this, AddPostActivity.class);
-        intent.putExtra("selectedBlogId", blogId);
+        intent.putExtra("newBlogId", blogId);
         startActivity(intent);
     }
 

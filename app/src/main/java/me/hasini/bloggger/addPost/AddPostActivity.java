@@ -1,31 +1,111 @@
 package me.hasini.bloggger.addPost;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import io.realm.Realm;
 import me.hasini.bloggger.R;
+import me.hasini.bloggger.addBlogs.AddBlogActivity;
+import me.hasini.bloggger.lib.models.Post;
+import me.hasini.bloggger.lib.network.NetworkManager;
+import me.hasini.bloggger.lib.utils.URLBuilder;
 
 public class AddPostActivity extends AppCompatActivity {
+
+    private static final Object LOG_TAG =  AddPostActivity.class.getSimpleName();
+    private NetworkManager networkManager;
+    private Realm realm;
+
+    private EditText postTitle;
+    private EditText postContent;
+    private Button save;
+    private String postTitleValue;
+    private String postContentValue;
+    private int blogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        int blogId;
+        initializeModules();
+        initializeUIElements();
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
         if(bundle != null){
-            blogId = bundle.getInt("selectedBlogId");
+            if(postTitleValue != null) {
+                addPostToDatabase(blogId);
+                startActivity(intent);
+            } else {
+                AlertDialog dialog = new AlertDialog
+                        .Builder(getApplicationContext())
+                        .setCancelable(true)
+                        .setMessage("Post title can not be empty")
+                        .create();
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
+            }
+            blogId = bundle.getInt("newBlogId");
             //RealmResults<Blog> blogs = realm.where(Blog.class).findAll();
             // Blog selectedBlog = blogs.where().equalTo("id",blogId).findFirst();
-            Toast.makeText(AddPostActivity.this,"selectedBlogId" + blogId, Toast.LENGTH_LONG).show();
+            Toast.makeText(AddPostActivity.this,"newblogId " + blogId, Toast.LENGTH_LONG).show();
 
         }
+    }
+
+    private void addPostToDatabase(int blogId) {
+        String URL = URLBuilder.modelURL("post");
+        HashMap<String, Object> map = new HashMap<>();
+        postTitleValue = postTitle.getText().toString();
+        postContentValue = postContent.getText().toString();
+        map.put("title", postTitleValue);
+        map.put("content", postContentValue);
+        String newBlogId = Integer.toString(blogId);
+        map.put("blogId", newBlogId);
+
+        this.networkManager.makePostRequest(URL, map, new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                realm.beginTransaction();
+                Post newPost = Post.deserialize(response.toString());
+                realm.copyToRealmOrUpdate(newPost);
+                realm.commitTransaction();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.e(String.valueOf(LOG_TAG), anError.toString());
+            }
+        });
+    }
+
+    private void initializeUIElements() {
+        EditText postTitle = (EditText) findViewById(R.id.post_title);
+        EditText postContent = (EditText) findViewById(R.id.post_content);
+        Button save = (Button)findViewById(R.id.post_save);
+        postTitleValue= postTitle.getText().toString();
+        postContentValue = postContent.getText().toString();
+    }
+
+
+    private void initializeModules() {
+        this.networkManager = new NetworkManager(getApplicationContext());
+        this.realm = Realm.getDefaultInstance();
     }
 
     }
