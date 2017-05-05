@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,11 +18,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import io.realm.Realm;
+import me.hasini.bloggger.BlogCategory.BlogCategoryActivity;
 import me.hasini.bloggger.R;
 import me.hasini.bloggger.addBlogs.AddBlogActivity;
+import me.hasini.bloggger.lib.models.Blog;
 import me.hasini.bloggger.lib.models.Post;
 import me.hasini.bloggger.lib.network.NetworkManager;
 import me.hasini.bloggger.lib.utils.URLBuilder;
+import me.hasini.bloggger.post.PostActivity;
 
 public class AddPostActivity extends AppCompatActivity {
 
@@ -31,10 +35,10 @@ public class AddPostActivity extends AppCompatActivity {
 
     private EditText postTitle;
     private EditText postContent;
-    private Button save;
     private String postTitleValue;
     private String postContentValue;
     private int blogId;
+    private int blogCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,32 +50,49 @@ public class AddPostActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-
+        blogId = bundle.getInt("newBlogId");
+        //getSelectedBlog(blogId);
+        Toast.makeText(AddPostActivity.this,"newblogId " + blogId, Toast.LENGTH_LONG).show();
+        Button save = (Button) findViewById(R.id.post_save);
         if(bundle != null){
-            if(postTitleValue != null) {
-                addPostToDatabase(blogId);
-                startActivity(intent);
-            } else {
-                AlertDialog dialog = new AlertDialog
-                        .Builder(getApplicationContext())
-                        .setCancelable(true)
-                        .setMessage("Post title can not be empty")
-                        .create();
-                dialog.setCanceledOnTouchOutside(true);
-                dialog.show();
-            }
-            blogId = bundle.getInt("newBlogId");
-            //RealmResults<Blog> blogs = realm.where(Blog.class).findAll();
-            // Blog selectedBlog = blogs.where().equalTo("id",blogId).findFirst();
-            Toast.makeText(AddPostActivity.this,"newblogId " + blogId, Toast.LENGTH_LONG).show();
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addPostToDatabase(blogId);
+                    Intent intent = new Intent(AddPostActivity.this, PostActivity.class);
+                    intent.putExtra("selectedBlogId", blogId);
+                    startActivity(intent);
 
+                }
+            });
         }
     }
+
+//    private void getSelectedBlog(int blogId) {
+//        String URL = URLBuilder.modelURLId("blog", blogId);
+//        HashMap<String, String> bodyParams = new HashMap<>();
+//        this.networkManager.makeGetRequest(URL, bodyParams, new JSONObjectRequestListener() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Blog selectedBlog = Blog.deserialize(response.toString());
+//                blogCategoryId = selectedBlog.getBlogCategoryId();
+//            }
+//
+//            @Override
+//            public void onError(ANError anError) {
+//                Log.e((String) LOG_TAG, anError.getErrorDetail());
+//            }
+//        });
+//
+//
+//    }
+
+
 
     private void addPostToDatabase(int blogId) {
         String URL = URLBuilder.modelURL("post");
         HashMap<String, Object> map = new HashMap<>();
-        postTitleValue = postTitle.getText().toString();
+        postTitleValue= postTitle.getText().toString();
         postContentValue = postContent.getText().toString();
         map.put("title", postTitleValue);
         map.put("content", postContentValue);
@@ -95,11 +116,9 @@ public class AddPostActivity extends AppCompatActivity {
     }
 
     private void initializeUIElements() {
-        EditText postTitle = (EditText) findViewById(R.id.post_title);
-        EditText postContent = (EditText) findViewById(R.id.post_content);
-        Button save = (Button)findViewById(R.id.post_save);
-        postTitleValue= postTitle.getText().toString();
-        postContentValue = postContent.getText().toString();
+         postTitle = (EditText) findViewById(R.id.post_title);
+         postContent = (EditText) findViewById(R.id.post_content);
+
     }
 
 
