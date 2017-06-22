@@ -47,6 +47,7 @@ public class BlogCategoryActivity extends BaseActivity {
     private NetworkManager networkManager;
 
     private Realm realm;
+    private String blogCategoryUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class BlogCategoryActivity extends BaseActivity {
             categoryId = bundle.getInt("blogCategoryId");
             RealmResults<BlogCategory> blogCategories = realm.where(BlogCategory.class).findAll();
             BlogCategory selectedCategory = blogCategories.where().equalTo("id",categoryId).findFirst();
-
+            getCategoryBlogs(selectedCategory);
             displayCategoryList(selectedCategory);
             //getCategoryBlogs(selectedCategory);
 
@@ -96,6 +97,7 @@ public class BlogCategoryActivity extends BaseActivity {
                 BlogCategory blogCategory = BlogCategory.deserialize(response.toString());
                 //Log.d("hgg", blogCategory.toString());
                 displayCategoryList(blogCategory);
+                blogCategoryUrl = blogCategory.getImageURL();
             }
 
             @Override
